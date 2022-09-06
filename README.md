@@ -20,5 +20,8 @@ ip2geotools
 STEP 1:
     Open important.py
     Enter credentials
+STEP 2:
+    Run Hot Words.py
+    Say "wakeup" or "onion"
     
-    Voilla ---
+    Kaboom
