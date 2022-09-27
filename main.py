@@ -1,14 +1,14 @@
 """
 A Virtual Assistant By Aoun Abbas..
 """
+
+#Libraries
 import webbrowser
 import speech_recognition as sr
 import pyttsx3
-#from tkinter import filedialog, Text
-#import tkinter as tk
 import os
+import face_recognition
 import pywhatkit
-#import cv2
 import screen_brightness_control as sbc
 from gnews import GNews
 import datetime
@@ -19,25 +19,26 @@ import pyjokes
 import ip_address as ip
 from Py_Weather import get_weather
 from ip2geotools.databases.noncommercial import DbIpCity
-#import readchar
-#import esptool
-#import socket
-#import serial
+import cv2
+import numpy as np
 
 
 
-
+#Main_Variables
 listener = sr.Recognizer()
 engine = pyttsx3.init()
 voices = engine.getProperty('voices')
 engine.setProperty('voice', voices[1].id)
+cascade_classifier = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+cap = cv2.VideoCapture(0)
 
-
+#Talk_Function
 def talk(text):
+    engine.setProperty('rate', 160)
     engine.say(text)
     engine.runAndWait()
 
-
+#Speech_Recog_Input
 def take_command():
     command = sr.Recognizer()
     with sr.Microphone() as source:
@@ -54,28 +55,83 @@ def take_command():
 
         return query.lower()
 
-#def face_recog():
-    #face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
-    #cap = cv2.VideoCapture(0)
 
-    #while True:
-        #_, img = cap.read()
-        #gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        #faces = face_cascade.detectMultiScale(gray, 1.1, 4)
-        #for (x, y, w, h) in faces:
-            #cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), 2)
-        #cv2.imshow('img', img)
-        #k = cv2.waitKey(30) & 0xff == ('q')
-        #if k == ('q'):
-            #break
-    #if {k}:
-        #cap.release()
-        #cv2.destroyAllWindows()
+#Face_Recog_Function
+def face_recog():
+    # list of known members
+    # Member 1
+    mohsin_image = face_recognition.load_image_file("mohsin.jpg")
+    mohsin_face_encoding = face_recognition.face_encodings(mohsin_image)[0]
 
+    # Member 2
+    aoun_image = face_recognition.load_image_file("aoun.jpg")
+    aoun_face_encoding = face_recognition.face_encodings(aoun_image)[0]
+
+    known_face_encodings = [
+        mohsin_face_encoding,
+        aoun_face_encoding
+    ]
+    known_face_names = [
+        "Mohsin",
+        "On"
+    ]
+
+    face_locations = []
+    face_encodings = []
+    face_names = []
+    process_this_frame = True
+
+    while True:
+        ret, frame = cap.read()
+
+        small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
+
+        rgb_small_frame = small_frame[:, :, ::-1]
+
+        if process_this_frame:
+            face_locations = face_recognition.face_locations(rgb_small_frame)
+            face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
+
+            face_names = []
+            for face_encoding in face_encodings:
+                matches = face_recognition.compare_faces(known_face_encodings, face_encoding)
+                name = "Unknown"
+
+                face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
+                best_match_index = np.argmin(face_distances)
+                if matches[best_match_index]:
+                    name = known_face_names[best_match_index]
+                    talk('Hello...' + name + '...Good to see you')
+                    talk('i have recognized you so to start press q')
+
+
+        process_this_frame = not process_this_frame
+
+        for (top, right, bottom, left), name in zip(face_locations, face_names):
+            top *= 4
+            right *= 4
+            bottom *= 4
+            left *= 4
+
+            cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
+
+            cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)
+            font = cv2.FONT_HERSHEY_DUPLEX
+            cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
+
+        cv2.imshow('Video', frame)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            talk('system started')
+            break
+    cap.release()
+    cv2.destroyAllWindows()
+
+#Time_Function
 def time():
     Time = datetime.datetime.now().strftime('%I:%M %p')
     talk(Time)
 
+#Date_Function
 def date():
     year = int(datetime.datetime.now().year)
     month = int(datetime.datetime.now().month)
@@ -84,22 +140,11 @@ def date():
     talk(month)
     talk(day)
 
-#def hc05():
- #   ser = serial.Serial("COM27", 9600, timeout=1)  # Change your port name COM... and your baudrate
-
-  #  def retrieveData():
-   #     ser.write(b'1')
-    #    data = ser.readline().decode('ascii')
-     #   return data
-
-    #while (True):
-     #   uInput = input("Retrieve data? ")
-      #  if uInput == '1':
-       #     print(retrieveData())
-
+#Main_Onion_Function
 def run_onion():
     command = take_command()
     print(command)
+#IF.....ELIF.....ELSE.....STATEMENTS
     if 'play' in command:
         song = command.replace('play', '')
         talk('sure playing ' + song)
@@ -112,25 +157,14 @@ def run_onion():
         pywhatkit.sendwhatmsg_instantly(cont, mess)
         print('Message sent')
         talk('Message sent to' + cont)
-    elif 'urdu' in command:
-        talk('I Cant speak urdu yet')
+    elif 'hi' in command:
+        talk('Hello there..... How are you')
         print(':)')
-   # elif 'face recognition' in command:
-        #talk('Ok, This might take a while, until patience is the best option,, smily face ten x')
-        #face_recog()
     elif 'time' in command:
         time = datetime.datetime.now().strftime('%I:%M %p')
         talk('Current time is ' + time)
-    #elif 'open' in command:
-        #hc05()
-        #talk('closing door')
-    #elif 'close' in command:
-        #ser = serial.Serial("COM27", 9600, timeout=1)  # Change your port name COM... and your baudrate
-        #ser.write(b'0')
     elif 'what is' in command:
-        talk('enter the Language')
-        lan = input('LANGUAGE:')
-        wikipedia.set_lang(lan)
+        talk('Wait.........imma tell you in a second')
         person = command.replace('what is', '')
         info = wikipedia.summary(person, 1)
         print(info)
@@ -189,23 +223,23 @@ def run_onion():
             password=google_p['password'],
             subject=input('What is the subject:')
         )
-        talk('i have successfully sent the email from aounabbasaws@gmail.com')
+        talk('i have successfully sent the email from your gmail')
     elif 'alexa' in command:
-        talk('whaaaaat dude are you serious i aint alexaa i am onion')
+        talk('I am not alexa, i am onion')
     elif 'you hungry' in command:
-        talk('yea.....i wanna drink some electricity with a wifi sandwitch')
+        talk('I dont feel hunger')
     elif 'hungry' in command:
         webbrowser.open('https://www.foodpanda.pk')
         talk('here you go.......get something for yourself')
     elif 'twitter' in command:
         webbrowser.open('https://www.twitter.com')
-        talk('here you go, check who is fighting or what is trending')
+        talk('here you go....opening twitter')
     elif 'youtube' in command:
         webbrowser.open('https://www.youtube.com')
-        talk('go watch some videos')
+        talk('here you go... opening youtube')
     elif 'instagram' in command:
         webbrowser.open('https://www.instagram.com')
-        talk('you can check for any dm')
+        talk('Opening Insta ')
     elif 'siri' in command:
         talk('i am onion')
     elif 'google' in command:
@@ -214,10 +248,10 @@ def run_onion():
         talk('yes sir, i am here')
     elif 'search' in command:
         search = command.replace('search', '')
-        info = pywhatkit.search(search)
+        pywhatkit.search(search)
         print("Searching...")
         print("Opening browser")
-        talk('searchin and opening browser')
+        talk('searching and opening browser')
     elif 'sleep' in command:
         exit(talk('i am going to sleep..............bye.............see you'))
     elif 'bye' in command:
@@ -228,8 +262,12 @@ def run_onion():
         talk('i am here to serve humanity and make earth a better place')
     elif 'your name' in command:
         talk('i am known as ONION')
+    elif 'thanks' in  command:
+        talk('my pleasure')
+    elif 'thank you' in command:
+        talk('welcome')
     elif 'real' in command:
-        talk('man.......i am offended, offcourse i am real')
+        talk('I am not real... I am a virtual Assistant')
     elif 'joke' in command:
         talk(pyjokes.get_joke())
     elif 'language' in command:
@@ -285,6 +323,8 @@ def run_onion():
     else:
         talk('can you repeat')
 
+
+face_recog()
 
 while True:
     run_onion()
