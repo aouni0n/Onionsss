@@ -1,5 +1,5 @@
 """
-A Virtual Assistant By Aoun Abbas..
+A Virtual Assistant..
 """
 
 #Libraries
@@ -12,16 +12,21 @@ import pywhatkit
 import screen_brightness_control as sbc
 from gnews import GNews
 import datetime
+import time
 from pywhatkit import send_mail
+
+import important
 from important import google_p
 import wikipedia
 import pyjokes
+import smtplib
 import ip_address as ip
 from Py_Weather import get_weather
 from ip2geotools.databases.noncommercial import DbIpCity
 import cv2
 import numpy as np
-
+import serial
+from GoogleNews import GoogleNews
 
 
 #Main_Variables
@@ -32,11 +37,23 @@ engine.setProperty('voice', voices[1].id)
 cascade_classifier = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 cap = cv2.VideoCapture(0)
 
+
 #Talk_Function
 def talk(text):
     engine.setProperty('rate', 160)
     engine.say(text)
     engine.runAndWait()
+
+
+try:
+    port = serial.Serial("COM3", 9600, timeout=1)
+    time.sleep(2)
+    talk("Connecting To My Physical body............Physical body connected")
+    print("Physical body, connected.")
+except:
+    talk("Unable to connect to my physical body")
+    print("Unable to connect to my physical body")
+
 
 #Speech_Recog_Input
 def take_command():
@@ -48,7 +65,7 @@ def take_command():
 
         try:
             print("Recognizing....")
-            query = command.recognize_google(audio,language='en-US')
+            query = command.recognize_google(audio,language='en-UK')
 
         except:
             return "none"
@@ -60,19 +77,19 @@ def take_command():
 def face_recog():
     # list of known members
     # Member 1
-    mohsin_image = face_recognition.load_image_file("mohsin.jpg")
-    mohsin_face_encoding = face_recognition.face_encodings(mohsin_image)[0]
+    adil_image = face_recognition.load_image_file("adil.jpg")
+    adil_face_encoding = face_recognition.face_encodings(adil_image)[0]
 
     # Member 2
     aoun_image = face_recognition.load_image_file("aoun.jpg")
     aoun_face_encoding = face_recognition.face_encodings(aoun_image)[0]
 
     known_face_encodings = [
-        mohsin_face_encoding,
+        adil_face_encoding,
         aoun_face_encoding
     ]
     known_face_names = [
-        "Mohsin",
+        "Adil",
         "On"
     ]
 
@@ -140,10 +157,16 @@ def date():
     talk(month)
     talk(day)
 
+
+
+
 #Main_Onion_Function
 def run_onion():
+    news = GNews()
     command = take_command()
-    print(command)
+    gass = str(port.readline())
+    print("You Said: " + command)
+
 #IF.....ELIF.....ELSE.....STATEMENTS
     if 'play' in command:
         song = command.replace('play', '')
@@ -160,11 +183,34 @@ def run_onion():
     elif 'hi' in command:
         talk('Hello there..... How are you')
         print(':)')
+    elif 'far' in command:
+        port.write(b'd')
+        talk('i am calculating the distance..........you can see the distance on the o led display')
+        print(gass + 'cenitimeter')
+    elif 'security protocol' in command:
+        talk('Executing Security Protocol')
+        os.startfile(r"C:\Users\DELL\Downloads\pythonProject\Security.py")
+        quit()
+    elif 'gas' in gass:
+        print("Gas Detected!!")
+        talk('I can smell gas around here........for your safety you should check if there is a leak')
     elif 'time' in command:
         time = datetime.datetime.now().strftime('%I:%M %p')
         talk('Current time is ' + time)
     elif 'what is' in command:
-        talk('Wait.........imma tell you in a second')
+        talk('Wait.........i am going tell you in a second')
+        person = command.replace('what is', '')
+        info = wikipedia.summary(person, 1)
+        print(info)
+        talk(info)
+    elif 'who is' in command:
+        talk('Wait.........i am going tell you in a second')
+        person = command.replace('what is', '')
+        info = wikipedia.summary(person, 1)
+        print(info)
+        talk(info)
+    elif 'where is' in command:
+        talk('Wait.........i am going tell you in a second')
         person = command.replace('what is', '')
         info = wikipedia.summary(person, 1)
         print(info)
@@ -176,7 +222,7 @@ def run_onion():
         print(response.ip_address)
     elif 'mouse' in command:
         os.startfile(r"C:\Users\DELL\Downloads\pythonProject\Virtual_Mouse.py")
-        talk('sure.. it might take a while')
+        quit(talk('sure.. it might take a while'))
     elif 'hello' in command:
         talk('hi there')
     elif 'my city' in command:
@@ -194,6 +240,12 @@ def run_onion():
         response = DbIpCity.get(ipv3, api_key='free')
         talk(response.country + 'is your country according to your ip')
         print(response.country)
+    elif 'lock' in command:
+        port.write(b'l')
+        talk('I locked the door')
+    elif 'unlock' in command:
+        port.write(b'u')
+        talk('door is unlocked')
     elif 'ip details' in command:
         ipv3 = ip.get()
         response = DbIpCity.get(ipv3, api_key='free')
@@ -215,15 +267,18 @@ def run_onion():
         get_weather(weather)
         talk('you can see the weather details in terminal')
     elif 'mail' in command:
-        talk('type the recivers email,the subject and the message')
-        send_mail(
-            email_sender="aounabbasaws@gmail.com",
-            email_receiver=input('To whom:'),
-            message=input('Type the message:'),
-            password=google_p['password'],
-            subject=input('What is the subject:')
-        )
-        talk('i have successfully sent the email from your gmail')
+        talk('type the client email the subject and the message')
+        sender_email = "aionionassistant@gmail.com"
+        rec_email = input("RECIEVER'S EMAIL:")
+        password = google_p["password"]
+        message = input("MESSAGE:")
+
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.starttls()
+        server.login(sender_email, password)
+        print('login success')
+        server.sendmail(sender_email, rec_email, message)
+        talk('i have successfully sent the email from my email to' + rec_email)
     elif 'alexa' in command:
         talk('I am not alexa, i am onion')
     elif 'you hungry' in command:
@@ -251,11 +306,13 @@ def run_onion():
         pywhatkit.search(search)
         print("Searching...")
         print("Opening browser")
-        talk('searching and opening browser')
+        talk('opening browser')
     elif 'sleep' in command:
-        exit(talk('i am going to sleep..............bye.............see you'))
+        os.startfile(r"C:\Users\DELL\Downloads\pythonProject\Hot Words.py")
+        quit(talk('i am going to sleep..............bye.............see you'))
     elif 'bye' in command:
-        quit(talk('byee, dont have a good day..........have a great day'))
+        os.startfile(r"C:\Users\DELL\Downloads\pythonProject\Hot Words.py")
+        quit(talk('byee, have a great day'))
     elif 'developed you' in command:
         talk('i was developed by Aoun Abbas')
     elif 'purpose' in command:
@@ -283,11 +340,8 @@ def run_onion():
     elif 'not good' in command:
         talk('what can i do for you')
     elif 'news' in command:
-        google_news = GNews(language='en')
-        con = command.replace('news', '')
-        con_news = google_news.get_news(con)
-        print(con_news[0])
-        talk(con_news[0])
+        webbrowser.open('https://www.arynews.tv')
+        talk('i have opened the news website for you')
     elif 'set brightness to 10' in command:
         sbc.set_brightness(10)
         talk('brightness set to 10')
@@ -320,9 +374,6 @@ def run_onion():
         talk('brightness set to 100')
     elif 'school' in command:
         talk('Your School is army burn hall college, It is one of the best institutions in pakistan and is administered by pakistani army')
-    else:
-        talk('can you repeat')
-
 
 face_recog()
 
