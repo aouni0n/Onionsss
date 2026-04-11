@@ -259,3 +259,201 @@ pip install opencv-python
 pip install numpy
 pip install pyserial
 pip install GoogleNews
+```
+
+# 📚 Required Arduino Libraries
+
+## Install these using Arduino Library Manager:
+
+Servo
+Adafruit GFX
+Adafruit SSD1306
+SPI
+Wire
+SoftwareSerial
+📂 Project Folder Structure
+
+Place files exactly like this:
+```
+ONION/
+
+├── main.py
+├── Security.py
+├── Hot Words.py
+├── important.py
+
+├── Arduino_code.ino
+
+├── haarcascade_frontalface_default.xml
+
+├── adil.jpg
+├── aoun.jpg
+
+├── Virtual_Mouse.py
+├── Py_Weather.py
+├── ip_address.py
+
+└── README.md
+```
+
+⚠ Important:
+
+Face images must be:
+```
+adil.jpg
+aoun.jpg
+```
+They must be placed in the same folder as main.py.
+
+# 👤 Face Recognition Setup
+
+Add face images:
+```
+adil.jpg
+aoun.jpg
+```
+Edit names inside:
+```
+main.py
+```
+Example:
+```python
+known_face_names = [
+    "Adil",
+    "Aoun"
+]
+```
+# 🔧 Setup Instructions
+
+Follow these steps carefully.
+
+## Step 1 — Upload Arduino Code
+
+Open:
+```
+Arduino_code.ino
+```
+Upload to:
+```
+Arduino Uno
+```
+Set baud rate:
+```
+9600
+```
+## Step 2 — Connect Hardware
+
+Wire all components exactly as shown in the wiring tables.
+
+Power Arduino.
+
+## Step 3 — Configure COM Port
+
+Open:
+```
+main.py
+Security.py
+```
+Find:
+```
+serial.Serial("COM3", 9600)
+```
+Change:
+```
+COM3 → Your Arduino Port
+```
+Example:
+
+COM4
+COM5
+## Step 4 — Install Python Libraries (Single Command Option)
+
+You can also install everything using:
+
+pip install speechrecognition pyttsx3 face_recognition pywhatkit wikipedia pyjokes screen-brightness-control gnews ip2geotools opencv-python numpy pyserial GoogleNews
+## Step 5 — Run System
+
+Start Sleep Mode:
+```
+python "Hot Words.py"
+```
+Say:
+```
+wake up
+```
+System initializes.
+
+# 🎤 Example Voice Commands
+```
+play music
+send a message
+lock
+unlock
+security protocol
+time
+who is Elon Musk
+search python tutorials
+set brightness to 50
+news
+joke
+sleep
+bye
+```
+# 🔄 Serial Communication Protocol
+
+Python ↔ Arduino
+
+Baud Rate: 9600
+
+Commands Sent to Arduino
+Command	Function
+```
+l	Lock Door
+u	Unlock Door
+d	Measure Distance
+Arduino Sends Back
+motion
+gas
+```
+# 🧪 Tested On
+```
+Windows 10
+Python 3.8+
+Arduino Uno
+USB Webcam
+```
+
+# 🚀 Future Improvements
+```
+Mobile App Control
+Cloud Integration
+ESP32 WiFi Version
+Remote Monitoring
+Voice Authentication
+Smart Home Integration
+AI Threat Detection
+```
+
+# 👨‍💻 Authors
+
+## Aounion
+
+## MakIbrahim
+
+# 📜 License
+
+MIT License
+
+Free to use, modify, and distribute.
+
+## ⭐ Final Notes
+
+This project demonstrates:
+
+Artificial Intelligence
+Computer Vision
+Embedded Systems
+Voice Recognition
+IoT Integration
+
+A complete AI-based Smart Security & Virtual Assistant System built from scratch.
