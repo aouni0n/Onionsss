@@ -43,11 +43,11 @@ Originally developed in **2022**, this project demonstrates early integration of
 
 ## 🟢 Normal Mode — Assistant Mode
 
-## Runs:
+**Runs:**
 
 main.py
 
-## Functions:
+**Functions:**
 
 • Face Recognition Login  
 • Voice Assistant  
@@ -59,13 +59,13 @@ main.py
 • Weather & News  
 • Brightness Control  
 
-## Command:
+**Command:**
 
 security protocol
 
-## Switches system to:
+**Switches system to:**
 
-**Security Mode**
+Security Mode
 
 ---
 
