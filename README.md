@@ -10,7 +10,7 @@ Originally developed in **2022**, this project demonstrates early integration of
 
 # 📌 Project Overview
 
-ONION combines:
+## ONION combines:
 
 • Artificial Intelligence  
 • Computer Vision  
@@ -18,14 +18,14 @@ ONION combines:
 • Embedded Systems  
 • Smart Security Automation  
 
-Python handles:
+## Python handles:
 
 • Voice recognition  
 • Face recognition  
 • AI responses  
 • Internet features  
 
-Arduino handles:
+## Arduino handles:
 
 • Sensors  
 • Door locking  
@@ -33,7 +33,7 @@ Arduino handles:
 • Motion detection  
 • Gas detection  
 
-Both communicate using:
+## Both communicate using:
 
 **Serial Communication (9600 baud)**
 
@@ -43,11 +43,11 @@ Both communicate using:
 
 ## 🟢 Normal Mode — Assistant Mode
 
-Runs:
+## Runs:
 
 main.py
 
-Functions:
+## Functions:
 
 • Face Recognition Login  
 • Voice Assistant  
@@ -59,11 +59,11 @@ Functions:
 • Weather & News  
 • Brightness Control  
 
-Command:
+## Command:
 
 security protocol
 
-Switches system to:
+## Switches system to:
 
 **Security Mode**
 
@@ -71,25 +71,25 @@ Switches system to:
 
 ## 🔴 Security Mode
 
-Runs:
+**Runs:**
 
 Security.py
 
-Monitors:
+**Monitors:**
 
 • PIR Motion Sensor  
 • Gas Sensor  
 
-Triggers alerts when:
+**Triggers alerts when:**
 
 • Motion detected  
 • Gas detected  
 
-Exit command:
+**Exit command:**
 
 security protocol
 
-Returns to:
+**Returns to:**
 
 main.py
 
@@ -97,24 +97,24 @@ main.py
 
 ## 🟡 Sleep Mode
 
-Runs:
+**Runs:**
 
 Hot Words.py
 
-Waits for:
+**Waits for:**
 
 wake up  
 onion  
 hello  
 
-Then launches:
+**Then launches:**
 
 main.py
 
 ---
 
 # ⚙️ Features
-
+**
 ✔ Face Recognition Login  
 ✔ Voice Controlled Assistant  
 ✔ Smart Door Lock  
@@ -128,7 +128,7 @@ main.py
 ✔ Weather & News  
 ✔ Screen Brightness Control  
 ✔ Serial Hardware Communication  
-
+**
 ---
 
 # 🧰 Hardware Components Used
@@ -215,15 +215,15 @@ I2C Address:
 
 # 🔧 USB Connection
 
-Connect:
+**Connect:**
 
 Arduino → PC via USB cable
 
-Used for:
+**Used for:**
 
 Serial Communication
 
-Baud Rate:
+**Baud Rate:**
 
 9600
 
@@ -231,7 +231,7 @@ Baud Rate:
 
 # 💻 Software Requirements
 
-Install:
+**Install:**
 
 Python 3.8+
 
