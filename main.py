@@ -77,20 +77,20 @@ def take_command():
 def face_recog():
     # list of known members
     # Member 1
-    adil_image = face_recognition.load_image_file("adil.jpg")
-    adil_face_encoding = face_recognition.face_encodings(adil_image)[0]
+    face1_image = face_recognition.load_image_file("face1.jpg")
+    face1_face_encoding = face_recognition.face_encodings(face1_image)[0]
 
     # Member 2
-    aoun_image = face_recognition.load_image_file("aoun.jpg")
-    aoun_face_encoding = face_recognition.face_encodings(aoun_image)[0]
+    face2_image = face_recognition.load_image_file("face2.jpg")
+    face2_face_encoding = face_recognition.face_encodings(face2_image)[0]
 
     known_face_encodings = [
-        adil_face_encoding,
-        aoun_face_encoding
+        face1_face_encoding,
+        face2_face_encoding
     ]
     known_face_names = [
-        "Adil",
-        "On"
+        "person 1",
+        "person 2"
     ]
 
     face_locations = []
