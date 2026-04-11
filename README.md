@@ -114,7 +114,7 @@ main.py
 ---
 
 # ⚙️ Features
-**
+
 ✔ Face Recognition Login  
 ✔ Voice Controlled Assistant  
 ✔ Smart Door Lock  
@@ -128,7 +128,7 @@ main.py
 ✔ Weather & News  
 ✔ Screen Brightness Control  
 ✔ Serial Hardware Communication  
-**
+
 ---
 
 # 🧰 Hardware Components Used
