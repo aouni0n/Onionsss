@@ -282,12 +282,12 @@ ONION/
 ├── Hot Words.py
 ├── important.py
 
-├── Arduino_code.ino
+├── sketch_oct21a.ino
 
 ├── haarcascade_frontalface_default.xml
 
-├── adil.jpg
-├── aoun.jpg
+├── face1.jpg
+├── face2.jpg
 
 ├── Virtual_Mouse.py
 ├── Py_Weather.py
@@ -300,8 +300,8 @@ ONION/
 
 Face images must be:
 ```
-adil.jpg
-aoun.jpg
+face1.jpg
+face2.jpg
 ```
 They must be placed in the same folder as main.py.
 
@@ -309,8 +309,8 @@ They must be placed in the same folder as main.py.
 
 Add face images:
 ```
-adil.jpg
-aoun.jpg
+face1.jpg
+face2.jpg
 ```
 Edit names inside:
 ```
@@ -319,8 +319,8 @@ main.py
 Example:
 ```python
 known_face_names = [
-    "Adil",
-    "Aoun"
+    "face1",
+    "face2"
 ]
 ```
 # 🔧 Setup Instructions
@@ -331,7 +331,7 @@ Follow these steps carefully.
 
 Open:
 ```
-Arduino_code.ino
+sketch_oct21a.ino
 ```
 Upload to:
 ```
